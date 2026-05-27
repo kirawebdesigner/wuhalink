@@ -1,0 +1,138 @@
+{
+  "name": "Driver",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Driver or company name"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Phone number"
+    },
+    "whatsapp": {
+      "type": "string",
+      "description": "WhatsApp number"
+    },
+    "truck_size": {
+      "type": "number",
+      "description": "Truck capacity in liters"
+    },
+    "price": {
+      "type": "number",
+      "description": "Price in ETB"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "busy"
+      ],
+      "default": "available",
+      "description": "Current availability"
+    },
+    "rating": {
+      "type": "number",
+      "default": 0,
+      "description": "Average rating out of 5"
+    },
+    "total_reviews": {
+      "type": "number",
+      "default": 0
+    },
+    "delivery_time": {
+      "type": "string",
+      "description": "Estimated delivery time e.g. 30 min"
+    },
+    "photo_url": {
+      "type": "string",
+      "description": "Profile photo URL"
+    },
+    "is_verified": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_approved": {
+      "type": "boolean",
+      "default": false
+    },
+    "subscription_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "expired",
+        "unpaid"
+      ],
+      "default": "unpaid"
+    },
+    "subscription_expiry": {
+      "type": "string",
+      "format": "date"
+    },
+    "total_calls": {
+      "type": "number",
+      "default": 0
+    },
+    "total_whatsapp": {
+      "type": "number",
+      "default": 0
+    },
+    "area": {
+      "type": "string",
+      "description": "Service area/neighborhood"
+    },
+    "user_email": {
+      "type": "string",
+      "description": "Email of the driver user account"
+    }
+  },
+  "required": [
+    "name",
+    "phone",
+    "truck_size",
+    "price"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.is_approved": true
+        },
+        {
+          "data.user_email": "{{user.email}}"
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.user_email": "{{user.email}}"
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

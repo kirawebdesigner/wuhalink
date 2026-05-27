@@ -1,0 +1,52 @@
+{
+  "name": "Review",
+  "type": "object",
+  "properties": {
+    "driver_id": {
+      "type": "string",
+      "description": "ID of the driver being reviewed"
+    },
+    "rating": {
+      "type": "number",
+      "description": "Rating 1-5"
+    },
+    "comment": {
+      "type": "string"
+    },
+    "reviewer_name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "driver_id",
+    "rating"
+  ],
+  "rls": {
+    "create": {},
+    "read": {},
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
